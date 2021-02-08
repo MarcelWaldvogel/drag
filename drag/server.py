@@ -66,6 +66,11 @@ def main():
     drag_command = os.getenv('DRAG_COMMAND')
     if drag_secret is None or drag_command is None:
         exit("Both DRAG_SECRET and DRAG_COMMAND environment variables needed")
+
+    drag_init = os.getenv('DRAG_INIT')
+    if drag_init is not None:
+        subprocess.run(drag_init)
+
     pid = os.fork()
     if pid == 0:
         # Process webhook requests in child process

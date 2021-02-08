@@ -30,17 +30,24 @@ Just create a `Dockerfile` inheriting from the original service, installing
 `drag` and using it as a wrapper for the original command.
 
 ```Dockerfile
-FROM cznic/knot:3
+FROM cznic/knot:latest
 
-RUN apt update && apt install -y python3-pip && apt clean
-RUN pip3 install drag
+RUN apt update && \
+    apt install --no-install-recommends --yes python3-pip git ssh && \
+    apt clean && \
+    rm -rf /var/lib/apt/lists/*
+RUN pip3 install drag && rm -rf ${HOME}/.cache
 
-# Set the variables
+# `drag` is configured by environment variables
+# The secret that must be part of a GitHub- or GitLab-style request
 ENV DRAG_SECRET 123
+# The command to execute, passed to a shell
 ENV DRAG_COMMAND cd /storage/data && git update && knotc reload
+# Ensure everything is up to date at start (cannot reload daemon yet)
+ENV DRAG_INIT cd /storage/data && git update
 
 # Just prepend `drag` to the original command line
-CMD drag knot -c /config/knot.cfg
+CMD ["drag", "knot", "-c", "/config/knot.cfg']
 ```
 
 # Operation
