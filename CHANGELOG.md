@@ -5,6 +5,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 
+# 0.1.2 - 2021-02-08
+## Added
+* `DRAG_INIT` and `DRAG_COMMAND` are run inside a shell. This should not
+  introduce security issues, as the command is not (yet) dependent on user
+  input (only on admin configuration).
+
+## Fixed
+
+## Changed
+* More and clearer diagnostic messages
+
+
 # 0.1.1 - 2021-02-08
 ## Added
 * If `DRAG_INIT` environment variable exists, that command is run at start-up.

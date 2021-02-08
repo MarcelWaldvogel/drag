@@ -12,7 +12,7 @@ import sys
 import subprocess
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-VERSION = '0.1.0'
+VERSION = '0.1.2'
 
 MAX_REQUEST_LEN = 100 * 1024
 
@@ -44,11 +44,11 @@ class WebhookRequestHandler(BaseHTTPRequestHandler):
         #    json_params = json.loads(json_payload.decode('utf-8'))
 
         try:
-            subprocess.run(drag_command, check=True)
-            logging.info("Ran hook")
+            subprocess.run(drag_command, shell=True, check=True)
+            logging.info("Ran hook {drag_command}")
             self.send_response(200, "OK")
         except subprocess.CalledProcessError:
-            logging.error("Hook failed")
+            logging.error("Failed hook {drag_command}")
             self.send_response(500, "Command failed")
         finally:
             self.end_headers()
@@ -69,7 +69,11 @@ def main():
 
     drag_init = os.getenv('DRAG_INIT')
     if drag_init is not None:
-        subprocess.run(drag_init)
+        try:
+            subprocess.run(drag_init, shell=True, check=True)
+            logging.info("Ran init {drag_init}")
+        except subprocess.CalledProcessError:
+            logging.error("Failed init {drag_init}")
 
     pid = os.fork()
     if pid == 0:
