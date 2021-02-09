@@ -5,6 +5,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 
+# 0.1.2+ - [Unreleased]
+## Added
+
+## Fixed
+* Log output actually substitutes values
+
+## Changed
+
+
 # 0.1.2 - 2021-02-08
 ## Added
 * `DRAG_INIT` and `DRAG_COMMAND` are run inside a shell. This should not

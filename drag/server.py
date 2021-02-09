@@ -45,10 +45,10 @@ class WebhookRequestHandler(BaseHTTPRequestHandler):
 
         try:
             subprocess.run(drag_command, shell=True, check=True)
-            logging.info("Ran hook {drag_command}")
+            logging.info(f"Ran hook {drag_command}")
             self.send_response(200, "OK")
         except subprocess.CalledProcessError:
-            logging.error("Failed hook {drag_command}")
+            logging.error(f"Failed hook {drag_command}")
             self.send_response(500, "Command failed")
         finally:
             self.end_headers()
@@ -71,9 +71,9 @@ def main():
     if drag_init is not None:
         try:
             subprocess.run(drag_init, shell=True, check=True)
-            logging.info("Ran init {drag_init}")
+            logging.info(f"Ran init {drag_init}")
         except subprocess.CalledProcessError:
-            logging.error("Failed init {drag_init}")
+            logging.error(f"Failed init {drag_init}")
 
     pid = os.fork()
     if pid == 0:
