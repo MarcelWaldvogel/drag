@@ -67,12 +67,17 @@ def webhook():
 
 
 def background_check():
-    while True:
-        with serialize:
-            subprocess.run(drag_command, shell=True, check=True)
-            logging.info(f"Checking {drag_command}")
-        time.sleep(drag_interval.total_seconds())
-
+    try:
+        while True:
+            with serialize:
+                try:
+                    subprocess.run(drag_command, shell=True, check=True)
+                    logging.info(f"Checking {drag_command}")
+                except subprocess.CalledProcessError:
+                    logging.error(f"Failed checking {drag_command}")
+            time.sleep(drag_interval.total_seconds())
+    except Exception as e:
+        logging.error(f"Uncaught exception in background_check: {e}")
 
 def main():
     global drag_secret, drag_command, drag_interval
