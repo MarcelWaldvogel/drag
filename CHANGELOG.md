@@ -7,11 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 # 0.1.2+ - [Unreleased]
 ## Added
+- `DRAG_INTERVAL` can be set to a human-readable time interval
+  (e.g., "3h 8.5s") to enable regular polling of the `DRAG_COMMAND`,
+  in case a webhook event went missing.
 
 ## Fixed
-* Log output actually substitutes values
+* Log output actually substitutes values.
 
 ## Changed
+- Requires `deltat` package.
 
 
 # 0.1.2 - 2021-02-08

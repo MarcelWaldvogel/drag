@@ -9,14 +9,19 @@ import hmac
 import logging
 import os
 import sys
+import time
 import subprocess
+import deltat
+import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-VERSION = '0.1.2'
+VERSION = '0.1.2+'
 
 MAX_REQUEST_LEN = 100 * 1024
 
 logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
+
+serialize = threading.Lock()
 
 
 class WebhookRequestHandler(BaseHTTPRequestHandler):
@@ -44,7 +49,8 @@ class WebhookRequestHandler(BaseHTTPRequestHandler):
         #    json_params = json.loads(json_payload.decode('utf-8'))
 
         try:
-            subprocess.run(drag_command, shell=True, check=True)
+            with serialize:
+                subprocess.run(drag_command, shell=True, check=True)
             logging.info(f"Ran hook {drag_command}")
             self.send_response(200, "OK")
         except subprocess.CalledProcessError:
@@ -60,8 +66,16 @@ def webhook():
     httpd.serve_forever()
 
 
+def background_check():
+    while True:
+        with serialize:
+            subprocess.run(drag_command, shell=True, check=True)
+            logging.info(f"Checking {drag_command}")
+        time.sleep(drag_interval.total_seconds())
+
+
 def main():
-    global drag_secret, drag_command
+    global drag_secret, drag_command, drag_interval
     drag_secret = os.getenv('DRAG_SECRET')
     drag_command = os.getenv('DRAG_COMMAND')
     if drag_secret is None or drag_command is None:
@@ -77,6 +91,10 @@ def main():
 
     pid = os.fork()
     if pid == 0:
+        # Run thread regularily, if needed
+        drag_interval = deltat.parse_time(os.getenv('DRAG_INTERVAL'))
+        if drag_interval is not None:
+            threading.Thread(target=background_check, daemon=True).start()
         # Process webhook requests in child process
         webhook()
     else:

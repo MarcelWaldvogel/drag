@@ -6,6 +6,7 @@ import subprocess
 import setuptools
 from drag import VERSION
 
+
 def extract_version():
     match = re.match(r'([-_.0-9a-z]+)(\+?)', VERSION)
     if match:
@@ -47,7 +48,7 @@ setuptools.setup(
     url="https://gitlab.com/MarcelWaldvogel/drag",
     license='AGPLv3',
     packages=setuptools.find_packages(),
-    install_requires=['requests', 'setuptools'],
+    install_requires=['requests', 'setuptools', 'deltat~=1.1'],
     python_requires='>=3.7',
     entry_points={
         'console_scripts': [
