@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
 
-# 0.1.2+ - [Unreleased]
+# 0.1.3 - 2021-07-06
 ## Added
 - `DRAG_INTERVAL` can be set to a human-readable time interval
   (e.g., "3h 8.5s") to enable regular polling of the `DRAG_COMMAND`,

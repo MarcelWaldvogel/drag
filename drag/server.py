@@ -15,7 +15,7 @@ import deltat
 import threading
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-VERSION = '0.1.2+'
+VERSION = '0.1.3'
 
 MAX_REQUEST_LEN = 100 * 1024
 
