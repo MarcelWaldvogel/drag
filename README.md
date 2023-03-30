@@ -1,4 +1,4 @@
-# Drag: A Webook listener dragging along its dockerized service
+# Drag: A Webhook listener dragging along its dockerized service
 
 Minimalistic GitHub/GitLab webhook listener for use in an existing Docker image.
 
